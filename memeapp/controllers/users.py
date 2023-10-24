@@ -12,7 +12,7 @@ def login():
         return redirect("/")
     username = request.form.get("username", None)
     password = request.form.get("password", None)
-    user = db_query(f"SELECT rowid, password_hash FROM users WHERE username='{username}'", one=True)
+    user = db_query(f"SELECT rowid, password_hash FROM users WHERE username=?", (username,), one=True)
     if user:
         user_id = user[0]
         password_hash = user[1]

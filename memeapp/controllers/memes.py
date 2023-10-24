@@ -145,6 +145,7 @@ def comments(meme_id):
                                  (meme_id,))
         user_ids_in_memes = (",".join(list(set([str(x[1]) for x in meme_comments]))))
 
+        # TODO?
         sql = f"SELECT rowid, username FROM users WHERE rowid in ({user_ids_in_memes})"
         usernames = db_query(sql)
         usernames = {x[0]: x[1] for x in usernames}
