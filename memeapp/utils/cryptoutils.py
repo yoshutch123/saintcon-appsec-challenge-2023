@@ -45,6 +45,7 @@ def get_session_token(user_id: int, ts: int = int(datetime.utcnow().timestamp())
 
 def get_session_from_token(token) -> Session:
     decoded = base64.b64decode(token.encode())
+    # todo here?
     return pickle.loads(decoded)
 
 

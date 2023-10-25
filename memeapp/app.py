@@ -48,6 +48,11 @@ def create_app(test_config=None):
         else:
             g.user = None
 
+    @app.after_request
+    def changeserver(response):
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        return response
+
     from memeapp.controllers import index, users, memes, admin
     app.register_blueprint(index.bp)
     app.register_blueprint(users.bp)
