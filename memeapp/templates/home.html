@@ -5,9 +5,9 @@
     <div class="row row-cols-4">
         {% for meme in memes %}
         <div class="card col m-3 p-1" style="width: 18rem;">
-            <img src="/memes/{{meme.id}}/view" class="card-img-top" alt="{{meme.name}}">
+            <img src="{{url_for('memes.get_meme', meme_id=meme.id)}}" class="card-img-top" alt="{{meme.name}}">
             <div class="card-body">
-                <a class="card-text btn stretched-link" href="/memes/{{meme.id}}">{{meme.name}}</a>
+                <a class="card-text btn stretched-link" href="{{url_for('memes.view_meme', meme_id=meme.id)}}">{{meme.name}}</a>
             </div>
         </div>
         {% endfor %}

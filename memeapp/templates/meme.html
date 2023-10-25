@@ -25,7 +25,7 @@
     </div>
     <br/>
     <div>
-        <img src="/memes/{{meme.id}}/view" class="img-fluid">
+        <img src="{{url_for('memes.get_meme', meme_id=meme.id)}}" class="img-fluid">
     </div>
     <br/>
     <br/>
@@ -50,7 +50,7 @@
         function shareMeme(e) {
             const username = document.querySelector("#username").value;
 
-            fetch("/memes/{{meme.id}}/shares", {
+            fetch("{{url_for('memes.share_meme', meme_id=meme.id)}}", {
                 method: "POST",
                 mode: "cors",
                 credentials: "same-origin",
@@ -64,7 +64,7 @@
         function getComments() {
             const commentsDiv = document.querySelector("#comments");
             commentsDiv.innerHTML = "";
-            fetch("/memes/{{meme.id}}/comments", {
+            fetch("{{url_for('memes.comments', meme_id=meme.id)}}", {
                 method: "GET",
                 mode: "cors",
                 credentials: "same-origin"
@@ -89,7 +89,7 @@
             const title = document.querySelector("#title").value;
             const body = document.querySelector("#body").value;
 
-            fetch("/memes/{{meme.id}}/comments", {
+            fetch("{{url_for('memes.comments', meme_id=meme.id)}}", {
                 method: "POST",
                 mode: "cors",
                 credentials: "same-origin",
