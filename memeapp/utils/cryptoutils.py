@@ -75,9 +75,11 @@ def get_verified_user_id_from_request(request) -> int:
     if not verify_session_token(request):
         return -1
 
-    token = request.headers.get("Authorization")
+    token = request.cookies.get(SESSION_TOKEN_NAME)
+    # token = request.headers.get("Authorization")
     if not token:
-        token = request.cookies.get(SESSION_TOKEN_NAME)
+        # token = request.cookies.get(SESSION_TOKEN_NAME)
+        return -1
 
     user_id = get_session_from_token(token).user_id
 
