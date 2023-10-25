@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from memeapp.conf import config
 import pickle
 import base64
+import json
 from dataclasses import dataclass
 
 from memeapp.conf.constants import SESSION_TOKEN_NAME
@@ -45,14 +46,18 @@ def get_session_token(user_id: int, ts: int = int(datetime.utcnow().timestamp())
 
 def get_session_from_token(token) -> Session:
     decoded = base64.b64decode(token.encode())
-    # todo here?
+    # return json.loads(decoded)
+    # j = json.loads(decoded)
+    print(decoded)
+    p = pickle.loads(decoded)
+    print(p)
     return pickle.loads(decoded)
 
 
 def verify_session_token(request) -> bool:
     token = request.cookies.get(SESSION_TOKEN_NAME)
-    if not token:
-        token = request.headers.get("Authorization")
+    # if not token:
+    #     token = request.headers.get("Authorization")
     if not token:
         return False
     session = get_session_from_token(token)
