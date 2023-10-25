@@ -47,6 +47,7 @@ def viewMyProfile():
         return redirect("/")
     return get_user(user_id=g.user.id)
 
+
 @bp.route("/editMyProfile", methods=["GET"])
 def editProfile():
     if not g.user:

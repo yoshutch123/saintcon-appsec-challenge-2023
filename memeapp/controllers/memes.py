@@ -67,7 +67,7 @@ def import_meme():
     driver = get_driver()
     driver.get(url)
     file_id = db_execute("INSERT INTO memes(name, owner) VALUES (?, ?)", (name, g.user.id))
-    driver.save_screenshot(os.path.join(current_app.config['UPLOAD_DIRECTORY'], name))
+    driver.save_screenshot(os.path.normpath(os.path.join(current_app.config['UPLOAD_DIRECTORY'], name)))
     return redirect(f"/memes/{file_id}")
 
 
