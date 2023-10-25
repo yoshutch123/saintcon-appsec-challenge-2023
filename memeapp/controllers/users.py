@@ -89,6 +89,7 @@ def create_edit_user():
         if password != passwordConfirm:
             errors.append("Passwords do not match")
 
+
     if len(errors) == 0:
         if editing:
             if password:
@@ -104,7 +105,7 @@ def create_edit_user():
         else:  #Create the user
             print("Attempting to create the user")
             if isExistingUser(username):
-                errors.append(f"Username '{username}' is not available")
+                errors.append("Username is not available")
             else:
                 pw_hash = cryptoutils.hash_password(password)
                 user_id = db_execute("INSERT INTO users VALUES (?, ?, ?, ?)",
