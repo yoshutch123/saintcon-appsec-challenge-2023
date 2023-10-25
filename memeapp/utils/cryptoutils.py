@@ -48,9 +48,9 @@ def get_session_from_token(token) -> Session:
     decoded = base64.b64decode(token.encode())
     # return json.loads(decoded)
     # j = json.loads(decoded)
-    print(decoded)
+    # print(decoded)
     p = pickle.loads(decoded)
-    print(p)
+    # print(p)
     return pickle.loads(decoded)
 
 

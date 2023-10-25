@@ -6,4 +6,4 @@ fi
 
 cd memeapp
 
-pytest --disable-warnings
+pytest --disable-warnings -s
