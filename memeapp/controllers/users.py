@@ -48,10 +48,12 @@ def create_edit_user():
     passwordConfirm = request.form.get("passwordConfirm", None)
     currentPassword = request.form.get("currentPassword", None) #used for create, but not edit
 
-    is_admin = int(request.form.get("a", 0))
-    if is_admin > 0:
-        if not g.user or not g.user.is_admin:
-            is_admin = 0
+    is_admin = 0
+    # This seems like a weird capability to make an admin via API call when you register
+    # is_admin = int(request.form.get("a", 0))
+    # if is_admin > 0:
+    #     if not g.user or not g.user.is_admin:
+    #         is_admin = 0
 
     # If there is no current user we assume that they are registering a new user vs editing an old one
     editing = not not g.user
