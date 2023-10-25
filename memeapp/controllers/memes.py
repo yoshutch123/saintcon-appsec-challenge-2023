@@ -32,7 +32,7 @@ def save_meme(file, name):
     if "." in file.filename and len(ext) < 6 and not name.endswith(ext):
         name += "." + ext
     file_id = db_execute("INSERT INTO memes(name, owner) VALUES (?, ?)", (name, g.user.id))
-    path = os.path.join(current_app.config['UPLOAD_DIRECTORY'], name)
+    path = os.path.normpath(os.path.join(current_app.config['UPLOAD_DIRECTORY'], name))
     if not os.path.exists(path):
         file.save(path)
     return file_id
