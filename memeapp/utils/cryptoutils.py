@@ -41,17 +41,16 @@ def get_session_token(user_id: int, ts: int = int(datetime.utcnow().timestamp())
     assertion = f"{user_id}-{ts}"
     signature = sign(assertion)
     session = Session(ts, user_id, signature)
-    return base64.b64encode(pickle.dumps(session)).decode().strip()
+    j = json.dumps(session.__dict__)
+    # return j.encode('utf-8')
+    return base64.b64encode(j.encode('utf-8')).decode().strip()
 
 
 def get_session_from_token(token) -> Session:
-    decoded = base64.b64decode(token.encode())
-    # return json.loads(decoded)
-    # j = json.loads(decoded)
-    # print(decoded)
-    p = pickle.loads(decoded)
-    # print(p)
-    return pickle.loads(decoded)
+    decoded = base64.b64decode(token.encode('utf-8'))
+    j = json.loads(decoded)
+    # print(j)
+    return Session(user_id=j['user_id'], timestamp=j['timestamp'], signature=j['signature'])
 
 
 def verify_session_token(request) -> bool:
