@@ -2,6 +2,7 @@ import sqlite3
 import os
 
 from flask import current_app, g
+from memeapp.model import User
 
 
 def get_db():
@@ -51,8 +52,18 @@ def init_app(app):
 
 
 def get_user_id_by_username(username: str):
+    user = get_user_id_and_passhash_by_username(username)
+    if user:
+        return user["id"]
+    # if username:
+    #     result = db_query("SELECT rowid FROM users WHERE username=?", (username,), one=True)
+    #     if result:
+    #         return result[0]
+    return None
+
+def get_user_id_and_passhash_by_username(username: str):
     if username:
-        result = db_query("SELECT rowid FROM users WHERE username=?", (username,), one=True)
+        result = db_query("SELECT rowid, password_hash FROM users WHERE username=?", (username,), one=True)
         if result:
-            return result[0]
+            return {"id": result[0], "password_hash": result[1]}
     return None

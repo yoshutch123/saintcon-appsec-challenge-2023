@@ -1,6 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, Response, g, url_for
+from memeapp.model import User
 from memeapp.utils import cryptoutils
-from memeapp.utils.dbutils import db_query, db_execute
+from memeapp.utils.dbutils import db_query, db_execute, get_user_id_and_passhash_by_username
 from memeapp.utils.authutils import set_session_token, login_required, clear_session_token
 
 bp = Blueprint("users", __name__)
@@ -12,10 +13,11 @@ def login():
         return redirect("/")
     username = request.form.get("username", None)
     password = request.form.get("password", None)
-    user = db_query(f"SELECT rowid, password_hash FROM users WHERE username=?", (username,), one=True)
+    user = get_user_id_and_passhash_by_username(username)
+    # user = db_query(f"SELECT rowid, password_hash FROM users WHERE username=?", (username,), one=True)
     if user:
-        user_id = user[0]
-        password_hash = user[1]
+        user_id = user["id"]
+        password_hash = user["password_hash"]
         if cryptoutils.check_password(password, password_hash):
             response = redirect("/")
             set_session_token(user_id, response)
@@ -62,10 +64,10 @@ def create_edit_user():
         if currentPassword == None or currentPassword == "":
             errors.append("Please enter your current password")
         else:
-            #TODO: this is a copy and paste of the login related code with minor differences (no user_id here).  we should look for a way to unify them
-            user = db_query(f"SELECT password_hash FROM users WHERE username=?", (g.user.username,), one=True)
+            # user = db_query(f"SELECT password_hash FROM users WHERE username=?", (g.user.username,), one=True)
+            user = get_user_id_and_passhash_by_username(g.user.username)
             if user:
-                password_hash = user[0]
+                password_hash = user["password_hash"]
                 if not cryptoutils.check_password(currentPassword, password_hash):
                     errors.append("Current password does not match what is on file.")
 
@@ -116,7 +118,8 @@ def create_edit_user():
         return render_template("authenticate.html", errors=errors, warnings=warnings, infos=infos, successes=successes)
 
 def isExistingUser(userName):
-    existing_user = db_query("SELECT username FROM users WHERE username=?", p=(userName,), one=True)
+    # existing_user = db_query("SELECT username FROM users WHERE username=?", p=(userName,), one=True)
+    existing_user = get_user_id_and_passhash_by_username(userName)
     return not not existing_user
 
 @bp.route("/users/<user_id>", methods=['GET'])
