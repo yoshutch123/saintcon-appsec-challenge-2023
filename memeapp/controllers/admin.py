@@ -12,7 +12,9 @@ bp = Blueprint("admin", __name__)
 
 @bp.route("/admin", methods=["GET"])
 def index():
-    if g.user and not g.user.is_admin:
+    # If user is unauthenticated and coming from localhost, allow
+    # If user is authenticated and is admin and coming from localhost, allow
+    if g.user and not g.user.is_admin and request.remote_addr != '127.0.0.1':
         return redirect("/home")
 
     c = {
@@ -23,7 +25,6 @@ def index():
         'SESSION_EXPIRY': eval('SESSION_EXPIRY')
         }
 
-    return render_template("admin.html", environ=os.environ, user=g.user,
-                           settings=c)
+    return render_template("admin.html", environ=os.environ, user=g.user, settings=c)
     # return render_template("admin.html", environ=os.environ, user=g.user,
     #                        settings={name: eval(name) for name in settings if not name.startswith("__")})
