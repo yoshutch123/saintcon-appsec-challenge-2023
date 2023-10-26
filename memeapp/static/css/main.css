@@ -1,0 +1,11 @@
+.meme-width {
+    width: 18rem;
+}
+.shared-by {
+    position: relative;
+    z-index: 1;
+}
+.cancel-btn {
+    width: fit-content;
+    float:right;
+}
