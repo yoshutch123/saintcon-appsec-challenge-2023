@@ -20,7 +20,8 @@ def set_session_token(user_id, response):
                         session_token,
                         secure=(not current_app.config["DEBUG"]),
                         httponly=True,
-                        samesite="Lax")
+                        samesite="Lax",
+                        max_age=600)
 
 
 def clear_session_token(response):
