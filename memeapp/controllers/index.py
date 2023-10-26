@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, g
+from flask import Blueprint, redirect, request, render_template, g
 from memeapp.controllers.users import get_user
 
 from memeapp.utils.authutils import login_required
@@ -12,7 +12,11 @@ bp = Blueprint("index", __name__)
 def index():
     if g.user:
         return redirect("/home")
-    return render_template("authenticate.html", errors=None, warnings=None, infos=None, successes=None)
+    if request.args and request.args["error"]:
+        errors = (request.args["error"],)
+    else:
+        errors = None
+    return render_template("authenticate.html", errors=errors, warnings=None, infos=None, successes=None)
 
 
 @bp.route("/home", methods=["GET"])

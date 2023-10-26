@@ -1,3 +1,4 @@
+# import os
 from flask import Blueprint, request, render_template, redirect, Response, g, url_for
 from memeapp.model import User
 from memeapp.utils import cryptoutils
@@ -11,6 +12,9 @@ bp = Blueprint("users", __name__)
 def login():
     if request.method == "GET":
         return redirect("/")
+    # Try to protect from CSRF attack by validating remote_addr
+    if request.remote_addr != '127.0.0.1' and request.remote_addr != '172.17.0.1':
+        return redirect("/?error=Invalid+Site")
     username = request.form.get("username", None)
     password = request.form.get("password", None)
     user = get_user_id_and_passhash_by_username(username)
@@ -23,9 +27,9 @@ def login():
             set_session_token(user_id, response)
             return response
         else:
-            return redirect("/login?error=Invalid+login")
+            return redirect("/?error=Invalid+login")
     else:
-        return redirect("/login?error=Invalid+login")
+        return redirect("/?error=Invalid+login")
 
 
 @bp.route("/logout", methods=["GET"])
@@ -41,6 +45,10 @@ def create_edit_user():
     warnings = []
     infos = []
     successes = []
+
+    # Try to protect from CSRF attack by validating remote_addr
+    if request.remote_addr != '127.0.0.1' and request.remote_addr != '172.17.0.1':
+        errors.append("Invalid site")
 
     username = request.form.get("username", None) #used for create, but not edit
     name = request.form.get("name", None)
@@ -128,6 +136,9 @@ def isExistingUser(userName):
 @bp.route("/users/<user_id>", methods=['GET'])
 @login_required
 def get_user(user_id=0):
+    # Try to protect from CSRF attack by validating remote_addr
+    if request.remote_addr != '127.0.0.1' and request.remote_addr != '172.17.0.1':
+        return Response("Not found", 404)
     result = db_query("SELECT rowid, username, name FROM users WHERE rowid=?", (user_id,), True)
     if result and len(result) == 3:
         record_id, username, name = result
