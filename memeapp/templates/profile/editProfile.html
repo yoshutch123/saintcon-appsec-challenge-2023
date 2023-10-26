@@ -28,13 +28,13 @@
             <!-- 
                 TODO: If any of the input fields have changes prompt before leaving "Discard Changes?"
             -->
-            <a class="nav-link" href="/profile" style="width: fit-content; float:right;">Cancel</a>
+            <a class="nav-link cancel-btn" href="/profile">Cancel</a>
 
         </form>
 
 
     </div>
-    <script>
+    <!-- <script nonce="{{nonce}}">
         function updateProfile(e) {
             const username = document.querySelector("#username").value;
             let user = {};
@@ -43,6 +43,6 @@
             user['password'] = document.querySelector("#password").value;
             user['confirmPassword'] = document.querySelector("#password2").value;
         }
-    </script>
+    </script> -->
 </div>
 {% endblock %}

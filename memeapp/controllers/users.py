@@ -124,7 +124,7 @@ def create_edit_user():
                 return response
     if g.user:
         # TODO: return in a way that keeps form fields populated, rather than resets them
-        return render_template("profile/editProfile.html", user=g.user, errors=errors, warnings=warnings, infos=infos, successes=successes)
+        return render_template("profile/editProfile.html", user=g.user, nonce=g.nonce, errors=errors, warnings=warnings, infos=infos, successes=successes)
     else:
         return render_template("authenticate.html", errors=errors, warnings=warnings, infos=infos, successes=successes)
 

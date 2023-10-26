@@ -12,11 +12,11 @@
         </button>
     </p>
     <div class="collapse" id="share">
-        <div class="card card-body form-control" style="width:600px">
+        <div class="card card-body form-control meme-width">
             <div class="input-group">
                 <span class="input-group-text">Username</span>
                 <input type="text" class="form-control" placeholder="Username" id="username" name="username">
-                <button class="btn btn-outline-secondary" type="button" onclick="shareMeme()">Share</button>
+                <button id="share-btn" class="btn btn-outline-secondary" type="button">Share</button>
             </div>
             <div class="alert alert-success d-none" role="alert" id="message">
                 Shared successfully!
@@ -32,7 +32,7 @@
     <h2>Comments</h2>
     <hr/>
     <div>
-        <div class="card card-body form-control" style="width:600px">
+        <div class="card card-body form-control meme-width>
             <div class="input-group">
                 <span class="input-group-text">Title</span>
                 <input type="text" class="form-control" placeholder="Title" id="title" name="title">
@@ -41,12 +41,12 @@
                 <span class="input-group-text">Comment</span>
                 <textarea class="form-control" placeholder="Comment" id="body" name="body"></textarea>
             </div>
-            <button class="btn btn-outline-secondary" type="button" onclick="submitComment()">Submit</button>
+            <button id="submit-comment-btn" class="btn btn-outline-secondary" type="button">Submit</button>
         </div>
     </div>
     <div id="comments">
     </div>
-    <script>
+    <script nonce="{{nonce}}">
         function shareMeme(e) {
             const username = document.querySelector("#username").value;
 
@@ -101,6 +101,13 @@
         }
 
         getComments();
+
+        document.getElementById('share-btn').addEventListener("click", () => {
+            shareMeme()
+        });
+        document.getElementById('submit-comment-btn').addEventListener("click", () => {
+            submitComment()
+        });
     </script>
 </div>
 {% endblock %}

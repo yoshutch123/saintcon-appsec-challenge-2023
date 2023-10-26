@@ -105,7 +105,7 @@ def view_meme(meme_id):
     valid_users = {u, *shared}
     if g.user.id not in valid_users:
         return Response("Not Found", status=404)
-    return render_template("meme.html", meme=Meme(id=meme_id, name=name, owner=g.user), user=g.user)
+    return render_template("meme.html", meme=Meme(id=meme_id, name=name, owner=g.user), user=g.user, nonce=g.nonce)
 
 
 @bp.route("/memes/<meme_id>/shares", methods=["POST"])

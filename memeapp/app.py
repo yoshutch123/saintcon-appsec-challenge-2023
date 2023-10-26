@@ -1,4 +1,6 @@
 import os
+import random
+import string
 
 from flask import Flask, request, g
 from memeapp.utils import dbutils, cryptoutils
@@ -52,13 +54,17 @@ def create_app(test_config=None):
                 g.user = None
         else:
             g.user = None
+        g.nonce = get_nonce()
 
     @app.after_request
     def add_security_headers(response):
+        nonce = get_nonce()
         response.headers['Strict-Transport-Secuirty'] = "max-age=31536000; includeSubDomains"
-        response.headers['Content-Security-Policy'] = "default-srf 'self'"
+        response.headers['Content-Security-Policy'] = f"default-src 'self' cdn.jsdelivr.net 'nonce-{nonce}'"
         response.headers['X-Content-Type-Options'] = "nosniff"
         response.headers['X-Frame-Options'] = "SAMEORIGIN"
+        response.headers['X-XSS-Protection'] = '1; mode=block'
+        response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
         return response
 
     from memeapp.controllers import index, users, memes, admin
@@ -68,3 +74,7 @@ def create_app(test_config=None):
     app.register_blueprint(admin.bp)
 
     return app
+
+
+def get_nonce():
+    return 'saintCon12_foiqml32'
