@@ -12,6 +12,11 @@ def create_app(test_config=None):
         "UPLOAD_DIRECTORY": os.path.join(app.instance_path, UPLOAD_DIR_NAME),
         "DATABASE": os.path.join(app.instance_path, DB_NAME),
     })
+    app.config.update(
+        SESSION_COOKIE_SECURE=True,
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_SAMESITE='Lax',
+    )
 
     if test_config is None:
         # load the instance config, if it exists, when not running tests

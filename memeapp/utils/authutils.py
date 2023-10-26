@@ -16,7 +16,9 @@ def login_required(f):
 
 def set_session_token(user_id, response):
     session_token = cryptoutils.get_session_token(user_id)
-    response.set_cookie(constants.SESSION_TOKEN_NAME, session_token, secure=(not current_app.config["DEBUG"]),
+    response.set_cookie(constants.SESSION_TOKEN_NAME,
+                        session_token,
+                        secure=(not current_app.config["DEBUG"]),
                         httponly=True,
                         samesite="Lax")
 
