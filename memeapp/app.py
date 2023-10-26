@@ -49,8 +49,11 @@ def create_app(test_config=None):
             g.user = None
 
     @app.after_request
-    def changeserver(response):
-        response.headers['X-Content-Type-Options'] = 'nosniff'
+    def add_security_headers(response):
+        response.headers['Strict-Transport-Secuirty'] = "max-age=31536000; includeSubDomains"
+        response.headers['Content-Security-Policy'] = "default-srf 'self'"
+        response.headers['X-Content-Type-Options'] = "nosniff"
+        response.headers['X-Frame-Options'] = "SAMEORIGIN"
         return response
 
     from memeapp.controllers import index, users, memes, admin
